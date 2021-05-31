@@ -1,34 +1,34 @@
 package subtask3
 
 class StringParser {
-
-    // TODO: Complete the following function
     fun getResult(inputString: String): Array<String> {
-        var openBrackets: Array<Char> = arrayOf('<','(','[')
-        var closeBrackets: Array<Char> = arrayOf('>',')',']')
-        val list: MutableList<String> = mutableListOf()
-        var openBracket = ' '
-        var closeBracket = ' '
-        var m = 0
-        for ( i in 0..inputString.length-1) {
-            if ( inputString[i] in openBrackets) {
-                m = 0
-                openBracket = inputString[i];
-                var openBracketIndex = openBrackets.indexOf(openBracket)
-                closeBracket = closeBrackets[openBracketIndex]
-                for (j in i..inputString.length-1) {
-                    if (inputString[j] == closeBracket && m == 1) {
-                        list.add(inputString.slice(i+1..j-1))
-                        break
-                    } else if (inputString[j] == openBracket) {
-                        m++;
-                    } else if (inputString[j] == closeBracket) {
-                        list.add(inputString.slice(i+1..j-1))
+        var counter: Int
+        var temp: Int
+        val result = arrayListOf<String>()
+        val signs = arrayOf('<', '>', '(', ')', '[', ']')
+
+        for (i in 0..inputString.lastIndex) {
+            for (sign in signs.indices step 2) {
+                when (inputString[i]) {
+                    signs[sign] -> {
+                        counter = 0
+                        temp = i + 1
+                        for (k in i..inputString.lastIndex) {
+                            if (inputString[k] == signs[sign]) {
+                                counter += 1
+                            }
+                            if (inputString[k] == signs[sign + 1]) {
+                                counter -= 1
+                                if (counter == 0) {
+                                    result.add(inputString.substring(temp until k))
+                                    break
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-        println(list)
-        return list.toTypedArray()
+        return result.toTypedArray()
     }
 }
